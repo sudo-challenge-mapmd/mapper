@@ -159,7 +159,6 @@ function Maptacular(width, height, magnification) {
   this.savePoint = function(side, x, y, value) {
 
     if (value === false) {
-      console.log([x,y, value]);
       self.interestingPoints.push([x, y]);
     }
 
