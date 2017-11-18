@@ -1,0 +1,66 @@
+
+/*Create Matrix*/
+Matrix1=Array[matrix_width][matrix_height]
+
+step_size=20
+Number_of_steps=matrix_width/step_size (integer)
+
+/*create a set of x,y pairs for the first iteration*/
+set_iteration1=
+set_iteration2=null
+flag_generate_position2=false /*flag to indicate whether positions for iteration 2 have been generated*/
+
+/*initialization of display position*/
+x_next=step_size-1
+y_next=step_size-1
+z_next=0
+
+get_point(){
+	x_send=x_next
+	y_send=y_next
+
+	update_current_position() /*update x_next, y_next*/
+
+	return x_send, y_send
+}
+
+save_point(x,y,flag){
+	Matrix1[x][y]=flag
+}
+
+update_current_position() {
+	If set_iteration1 is not empty:
+		position= random(size of set_iteration1)
+	/*update x_next, y_next*/
+		x_next, y_next= set_iteration1[position]
+		remove item from set_iteration2
+
+	else:	
+		if flag_generate_position2=false:
+			generate_iteration2_positions()
+			flag_generate_position2=true
+			position2= random(ize of set_iteration2)
+			/*update x_next, y_next*/
+			x_next, y_next= set_iteration2[position2]
+			remove item from set_iteration2
+		else:
+			position2= random(size of set_iteration2)
+			/*update x_next, y_next*/
+			x_next, y_next= set_iteration2[position2]
+			remove item from set_iteration2
+
+}
+
+generate_iteration2_positions(){
+	/*for scan through the matrix positions*/
+	for i in 0 to matrix_width:
+		for j in 0 to matrix_height:
+			if matrix1 [i] [j] ==true:
+				generate_positions_around(I,j)
+
+}
+
+generate_positions_around(i,j){
+	
+
+}
