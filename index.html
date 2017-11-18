@@ -17,13 +17,13 @@
     //    document.documentElement.requestFullscreen();
 
     function toggleFullScreen() {
-        const doc = window.document;
-        const docEl = doc.documentElement;
+        var doc = window.document;
+        var docEl = doc.documentElement;
 
-        const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-        const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+        var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+        var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
 
-        if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+        if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
             requestFullScreen.call(docEl);
         }
         else {
@@ -32,6 +32,11 @@
     }
 
     let isFullScreen = false;
+
+    var goFS = document.getElementById("goFS");
+    goFS.addEventListener("click", function () {
+
+    }, false);
 
     const data = {
         leftEye: [],
@@ -215,12 +220,8 @@
     }
 
     background.on('click', () => {
-        if (!isFullScreen) {
-            toggleFullScreen();
-            gameLoop();
-        } else {
+        console.log('clicked');
         clicked();
-        }
     })
 
     background.on('tap', () => {
@@ -229,6 +230,8 @@
 
 
     hideCircles();
+
+    gameLoop();
 
 </script>
 </body>
