@@ -42,21 +42,23 @@
     //Create a container object called the `stage`
     const stage = new PIXI.Container();
     const background = new Graphics();
+    background.beginFill(0x000000);
+    background.drawRect(0, 0, renderer.width, renderer.height);
+    background.endFill();
+    background.buttonMode = true;
+    background.interactive = true;
+    stage.addChild(background);
 
 
-
+    // left side
     const leftRectangle = new Graphics();
-    leftRectangle.beginFill(0xFFFFFF);
+    leftRectangle.beginFill(0, 0);
     leftRectangle.drawRect(0, 0, renderer.width / 2, renderer.height);
     leftRectangle.endFill();
     stage.addChild(leftRectangle);
 
-    leftRectangle.on('click',() => {
-        console.log('hello');
-    })
-
     const leftCircle = new Graphics();
-    leftCircle.beginFill(0x9966FF);
+    leftCircle.beginFill(0xFFFFFF);
     leftCircle.drawCircle(0, 0, circleSize);
     leftCircle.endFill();
     leftRectangle.addChild(leftCircle);
@@ -65,14 +67,15 @@
     leftMask.drawRect(0, 0, renderer.width / 2, renderer.height);
     leftCircle.mask = leftMask;
 
+    // right side
     const rightRectangle = new Graphics();
-    rightRectangle.beginFill(0xFFFFFF);
+    rightRectangle.beginFill(0, 0);
     rightRectangle.drawRect(renderer.width / 2, 0, renderer.width / 2, renderer.height);
     rightRectangle.endFill();
     stage.addChild(rightRectangle);
 
     const rightCircle = new Graphics();
-    rightCircle.beginFill(0x99999);
+    rightCircle.beginFill(0xFFFFFF);
     rightCircle.drawCircle(renderer.width / 2, 0, circleSize);
     rightCircle.endFill();
     rightRectangle.addChild(rightCircle);
@@ -81,9 +84,10 @@
     rightMask.drawRect(renderer.width / 2, 0, renderer.width / 2, renderer.height);
     rightCircle.mask = rightMask;
 
+    // center
     const centerLine = new Graphics();
     centerLine.position.set(renderer.width / 2, 0);
-    centerLine.lineStyle(5, 0x000000)
+    centerLine.lineStyle(5, 0xFFFFFF)
         .moveTo(0, 0)
         .lineTo(0, renderer.height);
 
@@ -99,11 +103,14 @@
         }
     }
 
-    let showFrequency = 3 * 60;
+    const showFrequency = 3 * 60;
+
     let variation = 0;
-    let variationMax = 4 * 60;
-    let displayFor = 1 * 60;
+    const variationMax = 4 * 60;
+    const displayFor = 1 * 60;
     let counter = 0;
+    const leyway = 30;
+    let canHit = false;
 
     let hits = 0;
 
@@ -121,11 +128,15 @@
             showLeftOrRight();
             [leftCircle.x, leftCircle.y] = randomPosition();
             [rightCircle.x, rightCircle.y] = randomPosition();
-            counter = 0;
             variation = getVariation();
-        } else if (displayFor == counter) {
+            canHit = true;
+            counter ++;
+        } else if (displayFor + showFrequency == counter) {
             hideCircles();
             counter++;
+        } else if (displayFor + showFrequency + leyway == counter) {
+            counter = 0;
+            canHit = false;
         } else {
             counter++;
         }
@@ -156,6 +167,18 @@
     function getVariation() {
         return Math.random() * variationMax;
     }
+
+    function clicked() {
+        console.log(canHit);
+    }
+
+    background.on('click', () => {
+        clicked();
+    })
+
+    background.on('tap', () => {
+        clicked();
+    })
 
 
     hideCircles();
