@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="js/heatmap.min.js"></script>
+    <script src="js/jspdf.min.js"></script>
+    <script src="mapmd.js"></script>
+    <style>
+      .eye-map .eye {
+        width: 300px;
+        height: 300px;
+        border: 1px solid #999999;
+        margin: 10px;
+        padding: 10px;
+        float: left;
+      }
+      footer {
+        clear: both;
+        text-align: right;
+        color: #e7e7e7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="eye-map">
+      <div id="left-eye" class="eye left">Left</div>
+      <div id="right-eye" class="eye right">Right</div>
+    </div>
+    <footer>
+      π
+    </footer>
+    <script>
+      var maptacular = new Maptacular(100, 100);
+      maptacular.download();
+    </script>
+  </body>
+</html>
