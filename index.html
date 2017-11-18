@@ -33,7 +33,7 @@
     renderer.autoResize = true;
     renderer.resize(window.innerWidth, window.innerHeight);
 
-    renderer.backgroundColor = 0xfffff;
+    renderer.backgroundColor = 0x808080;
 
     //Add the canvas to the HTML document
     document.body.appendChild(renderer.view);
@@ -49,7 +49,6 @@
     background.buttonMode = true;
     background.interactive = true;
     stage.addChild(background);
-
 
     // left side
     const leftRectangle = new Graphics();
@@ -188,6 +187,8 @@
     }
 
     function clicked() {
+        background.alpha = 0;
+        setTimeout(() => background.alpha = 1, 300);
         if (canHit) {
             didHit = true;
         }
