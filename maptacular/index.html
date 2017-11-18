@@ -29,8 +29,17 @@
       π
     </footer>
     <script>
-      var maptacular = new Maptacular(100, 100);
+      var maptacular = new Maptacular(100, 100, 25);
+      var point;
+
+      for (var i = 0; i < 100; i ++) {
+        point = maptacular.getPoint('left');
+        console.log(point);
+        maptacular.savePoint('left', point[0], point[1], false);
+      }
+
       maptacular.download();
+
     </script>
   </body>
 </html>
