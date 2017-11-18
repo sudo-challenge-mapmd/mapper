@@ -12,7 +12,12 @@
 }</style>
 <script type="text/javascript">
     //Create the renderer
-    window.open('index.html', 'newWindow', 'fullscreen=yes, scrollbars=no');
+    window.addEventListener("load",function() {
+        setTimeout(function(){
+            // This hides the address bar:
+            window.scrollTo(0, 1);
+        }, 0);
+    });
 
     const data = {
         leftEye: [],
