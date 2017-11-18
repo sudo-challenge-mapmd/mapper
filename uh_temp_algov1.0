@@ -1,4 +1,26 @@
+---------------------------
 
+list_iteration2= generate_positions_around(list_response, magnification, list_iteration)
+
+generate_positions_around(list_response, magnification, list_iteration){
+
+	for item in list_response:
+		list_iteration.add(int(item.x - magnification*width, item.y)
+                 list_iteration.add(int(item.x + magnification*width, item.y)
+		list_iteration.add(int(item.x, item.y - magnification*height)
+		list_iteration.add(int(item.x, item.y + magnification*height)
+
+		list_iteration.add(int(item.x+magnification*width, item.y + magnification*height)
+		list_iteration.add(int(item.x+magnification*width, item.y - magnification*height)
+		list_iteration.add(int(item.x-magnification*width, item.y + magnification*height)
+		list_iteration.add(int(item.x-magnification*width, item.y - magnification*height)
+		
+}
+
+
+
+
+--------------------------
 /*Create Matrix*/
 Matrix1=Array[matrix_width][matrix_height]
 
