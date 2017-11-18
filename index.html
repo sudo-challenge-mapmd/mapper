@@ -13,9 +13,12 @@
 <script type="text/javascript">
     //Create the renderer
 
-    const Graphics = PIXI.Graphics;
-    let rendererHeight, rendererWidth;
+    const data = {
+        leftEye: [],
+        rightEye: []
+    }
 
+    const Graphics = PIXI.Graphics;
 
     const renderer = PIXI.autoDetectRenderer(
         0, 0,
@@ -47,6 +50,10 @@
     leftCircle.endFill();
     leftRectangle.addChild(leftCircle);
 
+    const leftMask = new Graphics();
+    leftMask.drawRect(0, 0, renderer.width / 2, renderer.height);
+    leftCircle.mask = leftMask;
+
     const rightRectangle = new Graphics();
     rightRectangle.beginFill(0x000000);
     rightRectangle.drawRect(renderer.width / 2, 0, renderer.width / 2, renderer.height);
@@ -59,19 +66,73 @@
     rightCircle.endFill();
     rightRectangle.addChild(rightCircle);
 
+    const rightMask = new Graphics();
+    rightMask.drawRect(renderer.width / 2, 0, renderer.width / 2, renderer.height);
+    rightCircle.mask = rightMask;
+
     renderer.render(stage);
 
-    function gameLoop(){
+    function randomPosition(isLeft) {
+        if (isLeft) {
+            return [Math.random() * renderer.width / 2, Math.random() * renderer.height]
+        } else {
+            return [Math.random() * renderer.width / 2, Math.random() * renderer.height]
+        }
+    }
+
+    let showFrequency = 2 * 60;
+    let variation = 0;
+    let variationMax = 3 * 60;
+    let displayFor = 60;
+    let counter = 0;
+
+    let hits = 0;
+
+
+    //    leftRectangle.mask = leftCircle;
+    //    rightRectangle.mask = rightCircle;
+
+    function gameLoop() {
 
         //Loop this function 60 times per second
         requestAnimationFrame(gameLoop);
 
         //Move the cat 1 pixel per frame
-        rightCircle.x += 1;
+        if (showFrequency == counter) {
+            showLeftOrRight();
+            [leftCircle.x, leftCircle.y] = randomPosition();
+            [rightCircle.x, rightCircle.y] = randomPosition();
+            counter = 0;
+            variation = getVariation();
+        } else if (displayFor == counter) {
+            hideCircles();
+            counter++;
+        } else {
+            counter++;
+        }
 
         //Render the stage
         renderer.render(stage);
     }
+
+    function hideCircles() {
+        leftCircle.visible = false;
+        rightCircle.visible = false;
+    }
+
+    function showLeftOrRight() {
+        if (Math.random() > .5) {
+            leftCircle.visible = true;
+        } else {
+            rightCircle.visible = true;
+        }
+    }
+
+    function getVariation() {
+        return Math.random() * variationMax;
+    }
+
+    hideCircles();
 
     gameLoop();
 
