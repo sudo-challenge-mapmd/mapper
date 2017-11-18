@@ -60,6 +60,22 @@
     rightRectangle.addChild(rightCircle);
 
     renderer.render(stage);
+
+    function gameLoop(){
+
+        //Loop this function 60 times per second
+        requestAnimationFrame(gameLoop);
+
+        //Move the cat 1 pixel per frame
+        rightCircle.x += 1;
+
+        //Render the stage
+        renderer.render(stage);
+    }
+
+    gameLoop();
+
+
 </script>
 </body>
 </html>
