@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <script src="js/heatmap.min.js"></script>
     <script src="js/jspdf.min.js"></script>
-    <script src="mapmd.js"></script>
+    <script src="js/maptacular.js"></script>
     <style>
       .eye-map .eye {
         width: 300px;
@@ -25,20 +25,27 @@
       <div id="left-eye" class="eye left">Left</div>
       <div id="right-eye" class="eye right">Right</div>
     </div>
-    <footer>
-      π
-    </footer>
     <script>
-      var maptacular = new Maptacular(100, 100, 25);
-      var point;
 
-      for (var i = 0; i < 100; i ++) {
+      function mockStep(){
         point = maptacular.getPoint('left');
-        console.log(point);
-        maptacular.savePoint('left', point[0], point[1], false);
+        if (!point) {
+          return maptacular.download();
+        }
+        iteration = maptacular.savePoint('left', point[0], point[1], Math.random() > 0.1);
+        if (iteration < 3) {
+          setTimeout(mockStep, 30);
+        } else {
+          console.log("?");
+          maptacular.download();
+        }
       }
 
-      maptacular.download();
+      var maptacular = new Maptacular(300, 300, 20);
+      var point, iteration;
+
+      mockStep();
+
 
     </script>
   </body>

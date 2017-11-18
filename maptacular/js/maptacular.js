@@ -25,6 +25,7 @@ function Maptacular(width, height, magnification) {
     // The list of points we're going to be testing
     self.availablePoints = [];
     self.interestingPoints = [];
+    self.iteration = 0;
 
     // Setup the primary grid
     self.data = {
@@ -49,7 +50,9 @@ function Maptacular(width, height, magnification) {
 
           if (i % modX === 0 && j % modY === 0) {
             if (i !== self.width && j !== self.height) {
-              self.availablePoints.push([i, j]);
+              if (i > 0 && j > 0) {
+                self.availablePoints.push([i, j]);
+              }
             }
           }
 
@@ -93,28 +96,35 @@ function Maptacular(width, height, magnification) {
       ]);
 
       self.availablePoints.push([
-          point[0] + (self.magnification / 100) * self.width,
-          point[1] + (self.magnification / 100) * self.height
+          Math.floor(point[0] + (self.magnification / 100) * self.width),
+          Math.floor(point[1] + (self.magnification / 100) * self.height)
       ]);
       self.availablePoints.push([
-          point[0] + (self.magnification / 100) * self.width,
-          point[1] - (self.magnification / 100) * self.height
+          Math.floor(point[0] + (self.magnification / 100) * self.width),
+          Math.floor(point[1] - (self.magnification / 100) * self.height)
       ]);
       self.availablePoints.push([
-          point[0] - (self.magnification / 100) * self.width,
-          point[1] + (self.magnification / 100) * self.height
+          Math.floor(point[0] - (self.magnification / 100) * self.width),
+          Math.floor(point[1] + (self.magnification / 100) * self.height)
       ]);
       self.availablePoints.push([
-          point[0] - (self.magnification / 100) * self.width,
-          point[1] - (self.magnification / 100) * self.height
+          Math.floor(point[0] - (self.magnification / 100) * self.width),
+          Math.floor(point[1] - (self.magnification / 100) * self.height)
       ]);
 
     });
 
-    // TODO: Remove duplicates
-    // TODO: Remove negative values
+    self.availablePoints = self.availablePoints
+        .filter(function(value, index, _self){
+          return _self.indexOf(value) === index;
+        })
+        .filter(function(value){
+          return !(value[0] < 0 || value[1] < 0 || value[0] > self.width || value[1] > self.height);
+        });
+
 
     self.interestingPoints = [];
+    self.iteration++;
 
   };
 
@@ -130,24 +140,33 @@ function Maptacular(width, height, magnification) {
    *
    */
   this.getPoint = function(side) {
+
     if (!self.availablePoints.length) {
       if (!self.interestingPoints.length) {
-        console.log("Perfect Vision!");
+        console.log("No new points for this iteration");
         return null;
       }
       self.setPotentials();
     }
+
     return self.availablePoints.splice(
         Math.floor(Math.random() * self.availablePoints.length),
         1
     )[0];
+
   };
 
   this.savePoint = function(side, x, y, value) {
+
     if (value === false) {
+      console.log([x,y, value]);
       self.interestingPoints.push([x, y]);
     }
+
     self.data[side][x][y] = value;
+
+    return self.iteration;
+
   };
 
   /**
@@ -199,7 +218,7 @@ function Maptacular(width, height, magnification) {
         blur: .75,
         gradient: {
           '0': 'white',
-          '1': 'black'
+          '1': 'grey'
         }
       })
     };
@@ -207,12 +226,12 @@ function Maptacular(width, height, magnification) {
     ['left', 'right'].map(function(side) {
       for (var i = 0; i < self.width; i++) {
         for (var j = 0; j < self.height; j++) {
-          if (self.data[side][i][j] !== null) {
+          if (self.data[side][i][j] === false) {
             heatmaps[side].addData({
-              x: i * 3,
-              y: j * 3,
-              value: 100,
-              radius: 10
+              x: i,
+              y: j,
+              value: 1,
+              radius: 50
             });
           }
         }
