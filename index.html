@@ -41,12 +41,19 @@
 
     //Create a container object called the `stage`
     const stage = new PIXI.Container();
+    const background = new Graphics();
+
+
 
     const leftRectangle = new Graphics();
     leftRectangle.beginFill(0xFFFFFF);
     leftRectangle.drawRect(0, 0, renderer.width / 2, renderer.height);
     leftRectangle.endFill();
     stage.addChild(leftRectangle);
+
+    leftRectangle.on('click',() => {
+        console.log('hello');
+    })
 
     const leftCircle = new Graphics();
     leftCircle.beginFill(0x9966FF);
@@ -154,10 +161,6 @@
     hideCircles();
 
     gameLoop();
-
-
-
-
 
 </script>
 </body>
