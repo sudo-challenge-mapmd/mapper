@@ -125,7 +125,7 @@
     const leyway = 30;
     let canHit = false;
 
-    let hits = 0;
+    let didHit = false;
 
 
     //    leftRectangle.mask = leftCircle;
@@ -148,8 +148,14 @@
             hideCircles();
             counter++;
         } else if (displayFor + showFrequency + leyway == counter) {
-            counter = 0;
+            if (didHit) {
+                console.log('hit');
+            } else {
+                console.log('miss');
+            }
+            didHit = false;
             canHit = false;
+            counter = 0;
         } else {
             counter++;
         }
@@ -182,7 +188,9 @@
     }
 
     function clicked() {
-        console.log(canHit);
+        if (canHit) {
+            didHit = true;
+        }
     }
 
     background.on('click', () => {
