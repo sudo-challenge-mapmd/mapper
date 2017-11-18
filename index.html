@@ -26,6 +26,7 @@
     );
 
     const circleSize = 16;
+    const centerCircleSize = 5;
 
     renderer.view.style.position = "absolute";
     renderer.view.style.display = "block";
@@ -63,6 +64,12 @@
     leftCircle.endFill();
     leftRectangle.addChild(leftCircle);
 
+    const leftFocusCircle = new Graphics();
+    leftFocusCircle.beginFill(0xFFFFFF);
+    leftFocusCircle.drawCircle(renderer.width / 4, renderer.height / 2, centerCircleSize);
+    leftFocusCircle.endFill();
+    leftRectangle.addChild(leftFocusCircle);
+
     const leftMask = new Graphics();
     leftMask.drawRect(0, 0, renderer.width / 2, renderer.height);
     leftCircle.mask = leftMask;
@@ -79,6 +86,12 @@
     rightCircle.drawCircle(renderer.width / 2, 0, circleSize);
     rightCircle.endFill();
     rightRectangle.addChild(rightCircle);
+
+    const rightFocusCircle = new Graphics();
+    rightFocusCircle.beginFill(0xFFFFFF);
+    rightFocusCircle.drawCircle(3 * renderer.width / 4, renderer.height / 2, centerCircleSize);
+    rightFocusCircle.endFill();
+    rightRectangle.addChild(rightFocusCircle);
 
     const rightMask = new Graphics();
     rightMask.drawRect(renderer.width / 2, 0, renderer.width / 2, renderer.height);
@@ -130,7 +143,7 @@
             [rightCircle.x, rightCircle.y] = randomPosition();
             variation = getVariation();
             canHit = true;
-            counter ++;
+            counter++;
         } else if (displayFor + showFrequency == counter) {
             hideCircles();
             counter++;
