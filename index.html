@@ -25,6 +25,8 @@
         {antialias: false, transparent: false, resolution: 1}
     );
 
+    const circleSize = 16;
+
     renderer.view.style.position = "absolute";
     renderer.view.style.display = "block";
     renderer.autoResize = true;
@@ -34,6 +36,8 @@
 
     //Add the canvas to the HTML document
     document.body.appendChild(renderer.view);
+
+    let leftEye = true;
 
     //Create a container object called the `stage`
     const stage = new PIXI.Container();
@@ -46,7 +50,7 @@
 
     const leftCircle = new Graphics();
     leftCircle.beginFill(0x9966FF);
-    leftCircle.drawCircle(0, 0, 32);
+    leftCircle.drawCircle(0, 0, circleSize);
     leftCircle.endFill();
     leftRectangle.addChild(leftCircle);
 
@@ -62,7 +66,7 @@
 
     const rightCircle = new Graphics();
     rightCircle.beginFill(0x99999);
-    rightCircle.drawCircle(renderer.width / 2, 0, 32);
+    rightCircle.drawCircle(renderer.width / 2, 0, circleSize);
     rightCircle.endFill();
     rightRectangle.addChild(rightCircle);
 
@@ -71,10 +75,10 @@
     rightCircle.mask = rightMask;
 
     const centerLine = new Graphics();
-    centerLine.position.set(renderer.width / 2,0);
+    centerLine.position.set(renderer.width / 2, 0);
     centerLine.lineStyle(5, 0x000000)
-        .moveTo(0,0)
-        .lineTo(0,renderer.height);
+        .moveTo(0, 0)
+        .lineTo(0, renderer.height);
 
     stage.addChild(centerLine);
 
@@ -88,10 +92,10 @@
         }
     }
 
-    let showFrequency = 2 * 60;
+    let showFrequency = 3 * 60;
     let variation = 0;
-    let variationMax = 3 * 60;
-    let displayFor = 60;
+    let variationMax = 4 * 60;
+    let displayFor = 1 * 60;
     let counter = 0;
 
     let hits = 0;
@@ -129,10 +133,16 @@
     }
 
     function showLeftOrRight() {
-        if (Math.random() > .5) {
+        if (leftEye === true) {
             leftCircle.visible = true;
-        } else {
+        } else if (leftEye === false) {
             rightCircle.visible = true;
+        } else {
+            if (Math.random() > .5) {
+                leftCircle.visible = true;
+            } else {
+                rightCircle.visible = true;
+            }
         }
     }
 
@@ -140,9 +150,13 @@
         return Math.random() * variationMax;
     }
 
+
     hideCircles();
 
     gameLoop();
+
+
+
 
 
 </script>
