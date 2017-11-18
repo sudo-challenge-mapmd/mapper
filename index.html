@@ -55,7 +55,7 @@
     leftCircle.mask = leftMask;
 
     const rightRectangle = new Graphics();
-    rightRectangle.beginFill(0x000000);
+    rightRectangle.beginFill(0xFFFFFF);
     rightRectangle.drawRect(renderer.width / 2, 0, renderer.width / 2, renderer.height);
     rightRectangle.endFill();
     stage.addChild(rightRectangle);
@@ -69,6 +69,14 @@
     const rightMask = new Graphics();
     rightMask.drawRect(renderer.width / 2, 0, renderer.width / 2, renderer.height);
     rightCircle.mask = rightMask;
+
+    const centerLine = new Graphics();
+    centerLine.position.set(renderer.width / 2,0);
+    centerLine.lineStyle(5, 0x000000)
+        .moveTo(0,0)
+        .lineTo(0,renderer.height);
+
+    stage.addChild(centerLine);
 
     renderer.render(stage);
 
