@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="js/heatmap.min.js"></script>
+    <script src="js/jspdf.min.js"></script>
+    <script src="js/maptacular.js"></script>
+    <style>
+      .eye-map .eye {
+        width: 300px;
+        height: 300px;
+        border: 1px solid #999999;
+        margin: 10px;
+        padding: 10px;
+        float: left;
+      }
+      footer {
+        clear: both;
+        text-align: right;
+        color: #e7e7e7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="eye-map">
+      <div id="left-eye" class="eye left">Left</div>
+      <div id="right-eye" class="eye right">Right</div>
+    </div>
+    <script>
+
+      function mockStep(){
+        point = maptacular.getPoint('left');
+        if (!point) {
+          return maptacular.download();
+        }
+        iteration = maptacular.savePoint('left', point[0], point[1], Math.random() > 0.1);
+        if (iteration < 3) {
+          setTimeout(mockStep, 30);
+        } else {
+          maptacular.download();
+        }
+      }
+
+      var maptacular = new Maptacular(300, 300, 20);
+      var point, iteration;
+
+      mockStep();
+
+
+    </script>
+  </body>
+</html>
