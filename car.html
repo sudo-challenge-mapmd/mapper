@@ -93,14 +93,6 @@
     let visionMapFilterLeft = new VisionMapFilter(ri, ro, c);
     let visionMapFilterRight = new VisionMapFilter(ri, ro, c);
 
-    visionMapFilterLeft.uniforms.warp = 0;
-    visionMapFilterLeft.uniforms.darkening = 1;
-    visionMapFilterLeft.uniforms.innerWarp = 1;
-
-    visionMapFilterRight.uniforms.warp = 1;
-    visionMapFilterRight.uniforms.darkening = 1;
-    visionMapFilterRight.uniforms.innerWarp = 0;
-
     //Create the renderer
     var stage = new PIXI.Container(),
         renderer = PIXI.autoDetectRenderer(0, 0);
@@ -185,24 +177,35 @@
         renderer.render(stage);
     }
 
-    /*
+    
     var transitionId = null;
-    var mode = 0;
-    var nModes = 3;
-    function pointerUp(){
+    var mode = 1;
+    function toggleMode(){
         window.cancelAnimationFrame(transitionId);
-        var start = visionMapFilterLeft.uniforms.stage;
-        mode = (mode + 1) % (nModes + 1);
-        var end = mode;
-        transitionId = Math.animation(start, end, 200, Tween.Quad.easeIn, (x)=>{
-            visionMapFilterLeft.uniforms.stage = x;
-        });
+        mode = (mode + 1) % 2;
+        if (mode === 0) {
+            visionMapFilterLeft.uniforms.warp = 0;
+            visionMapFilterLeft.uniforms.darkening = 0;
+            visionMapFilterLeft.uniforms.innerWarp = 0;
+            visionMapFilterRight.uniforms.warp = 0;
+            visionMapFilterRight.uniforms.darkening = 0;
+            visionMapFilterRight.uniforms.innerWarp = 0;
+        } else {
+            visionMapFilterLeft.uniforms.warp = 0;
+            visionMapFilterLeft.uniforms.darkening = 1;
+            visionMapFilterLeft.uniforms.innerWarp = 1;
+            visionMapFilterRight.uniforms.warp = 1;
+            visionMapFilterRight.uniforms.darkening = 1;
+            visionMapFilterRight.uniforms.innerWarp = 0;
+        }
     }
 
+    toggleMode();
+
     stage.interactive = true;
-    stage.on('tap', pointerUp);
-    stage.on('click', pointerUp);
-    */
+    stage.on('tap', toggleMode);
+    stage.on('click', toggleMode);
+    
 
     setup();
 </script>
