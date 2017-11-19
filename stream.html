@@ -127,7 +127,7 @@
     let texture;
     let sprite;
 
-    let ri = 0.15; let ro = 0.3; let c = {x:0.48, y:0.42};
+    let ri = 0.15; let ro = 0.25; let c = {x:0.5, y:0.5};
     let visionMapFilter = new VisionMapFilter(ri, ro, c);
 
     function onWebcam() {
@@ -187,7 +187,7 @@
     function updateFilter(){
         var x = transition;
         visionMapFilter.uniforms.warp = x;
-        visionMapFilter.uniforms.darkening = x;
+        visionMapFilter.uniforms.darkening = 2;
         visionMapFilter.uniforms.contrast = 0;
     }
 
