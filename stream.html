@@ -86,6 +86,98 @@
         }
     `;
 
+    class VisionMapFilter extends PIXI.Filter {
+        constructor() {
+            super(VisionMapFilter.vertexShader, VisionMapFilter.fragmentShader);
+            this.uniforms.nssm = new PIXI.Matrix();
+            this.uniforms.inssm = new PIXI.Matrix();
+        }
+        apply(filterManager, input, output) {
+            filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.nssm);
+            filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.inssm);
+            this.uniforms.inssm.invert();
+            filterManager.applyFilter(this, input, output);
+        }
+    }
+    VisionMapFilter.vertexShader = `
+            attribute vec2 aVertexPosition;
+            attribute vec2 aTextureCoord;
+            uniform mat3 projectionMatrix;
+            uniform mat3 filterMatrix;
+            varying vec2 vTextureCoord;
+            varying vec2 vFilterCoord;
+            void main(void){
+               gl_Position = vec4((projectionMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);
+               vFilterCoord = ( filterMatrix * vec3( aTextureCoord, 1.0)  ).xy;
+               vTextureCoord = vFilterCoord;
+            }
+        `;
+    VisionMapFilter.fragmentShader = `
+            precision highp float;
+
+            varying vec2 vTextureCoord;
+            uniform sampler2D uSampler;
+
+            uniform mat3 nssm;
+            uniform mat3 inssm;
+
+            vec2 mapCoord( vec2 coord ){
+                return (vec3(coord, 1.0) * nssm).xy;
+            }
+
+            vec2 unmapCoord( vec2 coord ){
+                return (vec3(coord, 1.0) * inssm).xy;
+            }
+
+            vec2 warpAround(vec2 uv, vec2 p, float rInner, float rOuter) {
+                vec2 d = p - uv;
+                float l = length(d);
+                vec2 n = normalize(d);
+                float r = rOuter - rInner;
+                float R = rOuter;
+
+                float x = max(R - l, 0.0);
+                // float m = pow(x/R, 0.5);
+                // float m = smoothstep(0.0, R, x);
+                float m = pow(min(x/(r), 1.0), 2.0);
+
+                return n * m * l;
+            }
+
+            vec3 brightnessContrast(vec3 value, float brightness, float contrast){
+                return (value - 0.5) * contrast + 0.5 + brightness;
+            }
+
+            vec3 enhance(vec3 col, vec2 uv, vec2 p, float rInner, float rOuter){
+                vec2 d = p - uv;
+                float l = length(d);
+                float r = rOuter - rInner;
+                float R = rOuter;
+
+                float x = max(R - l, 0.0);
+                float cm = x;
+                return brightnessContrast(col, cm * 2.0, cm * 8.0 + 1.0);
+            }
+
+            void main(){
+                vec2 uv = mapCoord(vTextureCoord);
+
+                uv += warpAround(uv, vec2(0.5), 0.05, 0.2);
+                uv += warpAround(uv, vec2(0.6), 0.1, 0.2);
+                uv += warpAround(uv, vec2(0.7, 0.5), 0.13, 0.3);
+
+                vec3 col = texture2D(uSampler, unmapCoord(uv)).rgb;
+
+                // brightness / contrast
+                // col = enhance(col, uv, vec2(0.5), 0.1, 0.3);
+                // col = enhance(col, uv, vec2(0.6), 0.1, 0.3);
+                // col = enhance(col, uv, vec2(0.7, 0.5), 0.13, 0.5);
+
+                gl_FragColor = vec4(col, 1.0);
+            }
+        `;
+    let visionMapFilter = new VisionMapFilter();
+
     //Create the renderer
     var stage = new PIXI.Container(),
         renderer = PIXI.autoDetectRenderer(0, 0);
@@ -134,7 +226,7 @@
         sprite.y = 0;
         sprite.height = renderer.height;
         sprite.width = renderer.width/2;
-        sprite.filters = [new BarrelFilter(1.2)];
+        sprite.filters = [visionMapFilter, new BarrelFilter(1.2)];
 
         stage.addChild(sprite);
 
@@ -144,7 +236,7 @@
         sprite.y = 0;
         sprite.height = renderer.height;
         sprite.width = renderer.width/2;
-        sprite.filters = [new BarrelFilter(1.2)];
+        sprite.filters = [visionMapFilter,new BarrelFilter(1.2)];
 
         stage.addChild(sprite);
 
