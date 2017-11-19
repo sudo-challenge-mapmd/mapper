@@ -94,7 +94,7 @@
             this.uniforms.nssm = new PIXI.Matrix();
             this.uniforms.inssm = new PIXI.Matrix();
 
-            this.uniforms.transition = 0;
+            this.uniforms.stage = 0;
         }
         apply(filterManager, input, output) {
             filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.nssm);
@@ -120,16 +120,12 @@
     VisionMapFilter.fragmentShader = `
             precision highp float;
 
-            #define R1 vec2(0.5),      0.02, 0.3
-            #define R2 vec2(0.6),      0.02, 0.3
-            #define R3 vec2(0.7, 0.5), 0.05, 0.3
-
             varying vec2 vTextureCoord;
             uniform sampler2D uSampler;
 
             uniform mat3 nssm;
             uniform mat3 inssm;
-            uniform float transition;
+            uniform float stage;
 
             vec2 mapCoord( vec2 coord ){
                 return (vec3(coord, 1.0) * nssm).xy;
@@ -143,13 +139,14 @@
                 vec2 d = p - uv;
                 float l = length(d);
                 vec2 n = normalize(d);
-                float r = rOuter - rInner;
+                float r = rInner;
                 float R = rOuter;
 
-                float x = max(R - l, 0.0);
+                // float x = max(R - l, 0.0);
                 // float m = pow(x/R, 0.5);
                 // float m = smoothstep(0.0, R, x);
-                float m = pow(min(x/(r), 1.0), 2.0);
+                float x = 1.0 - clamp((l - r)/(R - r), 0.0, 1.0);
+                float m = x;
 
                 return n * m * l;
             }
@@ -171,40 +168,45 @@
 
             vec3 darken(vec3 col, vec2 uv, vec2 p, float rInner, float rOuter){
                 vec2 d = p - uv;
-                float l = length(d) * 1.8;
-                float r = rOuter - rInner;
+                float l = length(d);
+                float r = rInner;
                 float R = rOuter;
 
-                float x = max(R - l, 0.0);
-                return brightnessContrast(col, -x, 1.0);
+                float x = max(r - l, 0.0);
+                return brightnessContrast(col, -x*10., 1.0);
             }
 
+            #define R0 vec2(0.5, 0.5), 0.1, 0.3
+
             void main(){
+                float warpTransition = clamp(stage, 1.0, 2.0) - 1.0;
+                float visionTransition = clamp(stage, 0.0, 1.0);
+
                 vec2 uv = mapCoord(vTextureCoord);
                 vec2 uv0 = uv;
 
-                uv += transition * warpAround(uv, R1);
-                uv += transition * warpAround(uv, R2);
-                uv += transition * warpAround(uv, R3);
+                vec2 delta = vec2(0.0);
+                delta += warpAround(uv, R0);
+                uv += delta * warpTransition;
+
+                uv -= delta * (1.0 - visionTransition);
 
                 vec3 col = texture2D(uSampler, unmapCoord(uv)).rgb;
-                vec3 e;
+                vec3 e = vec3(0.0);
 
                 // brightness / contrast
                 /*
                 e = col;
-                e = enhance(e, uv, R1);
-                e = enhance(e, uv, R2);
-                e = enhance(e, uv, R3);
+                // e = enhance(e, uv, R1);
+                // e = enhance(e, uv, R2);
+                e = enhance(e, uv, vec2(0.7, 0.5), 0.02, 0.1);
                 col = mix(e, col, transition);
                 */
 
                 // simulate vision
                 e = col;
-                e = darken(e, uv0, R1);
-                e = darken(e, uv0, R2);
-                e = darken(e, uv0, R3);
-                col = e;//mix(e, col, transition);
+                e = darken(e, uv0, R0);
+                col = mix(e, col, 0.0);
 
                 gl_FragColor = vec4(col, 1.0);
             }
@@ -290,13 +292,14 @@
     }
 
     var transitionId = null;
-    var m = visionMapFilter.uniforms.transition < 0.5;
+    var mode = 0;
+    var nModes = 3;
     function pointerUp(){
         window.cancelAnimationFrame(transitionId);
-        var start = m ? 0 : 1;
-        var end = m ? 1 : 0;
-        m = !m;
-        transitionId = Math.animation(start, end, 200, Tween.Quad.easeIn, (x)=>{visionMapFilter.uniforms.transition = x});
+        var start = visionMapFilter.uniforms.stage;
+        mode = (mode + 1) % (nModes + 1);
+        var end = mode;
+        transitionId = Math.animation(start, end, 200, Tween.Quad.easeIn, (x)=>{visionMapFilter.uniforms.stage = x});
     }
 
     stage.interactive = true; 
