@@ -125,9 +125,7 @@
     let texture;
     let sprite;
 
-    function onWebcam() {
-        console.log('webcam loaded');
-        // console.log(webcam.video);
+
 
         var video = document.createElement("video");
         video.preload = "auto";
@@ -159,10 +157,6 @@
         renderer.render(stage);
 
         loop();
-
-//        requestAnimationFrame(loop);
-
-    }
 
     function loop() {
         setTimeout(loop, 70);
