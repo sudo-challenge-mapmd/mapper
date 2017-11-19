@@ -6,6 +6,9 @@
     <title>mapMD</title>
 </head>
 <script src="pixi.js"></script>
+<script src="maptacular/js/maptacular.js"></script>
+<script src="maptacular/js/heatmap.min.js"></script>
+<script src="maptacular/js/jspdf.min.js"></script>
 <body>
 <style>* {
     padding: 0;
@@ -30,7 +33,20 @@
     right: 0;
     bottom: 0;
 }
+
+.eye-map .eye {
+    width: 300px;
+    height: 300px;
+    border: 1px solid #999999;
+    margin: 10px;
+    padding: 10px;
+    float: left;
+}
 </style>
+<div class="eye-map" style="background-color: white;">
+    <div id="left-eye" class="eye left">Left</div>
+    <div id="right-eye" class="eye right">Right</div>
+</div>
 <div id="wrapper">
     <button id="goFS">Start</button>
 </div>
@@ -38,16 +54,17 @@
     //Create the renderer
     //    document.documentElement.requestFullscreen();
     class BarrelFilter extends PIXI.Filter {
-        constructor(power = 1.2, offset = { x: 0, y: 0 }) {
+        constructor(power = 1.2, offset = {x: 0, y: 0}) {
             super(undefined, BarrelFilter.fragment);
-            this.uniforms.dimensions = { x: 0, y: 0 };
-            this.uniforms.filterArea = { x: 0, y: 0, z: 0, w: 0 };
+            this.uniforms.dimensions = {x: 0, y: 0};
+            this.uniforms.filterArea = {x: 0, y: 0, z: 0, w: 0};
             this.uniforms.power = power;
             this.uniforms.offset = offset;
 
             this.uniforms.nssm = new PIXI.Matrix();
             this.uniforms.inssm = new PIXI.Matrix();
         }
+
         apply(filterManager, input, output) {
             this.uniforms.dimensions.x = input.sourceFrame.width;
             this.uniforms.dimensions.y = input.sourceFrame.height;
@@ -243,6 +260,8 @@
 
         let missCount = 0;
 
+        let maptacular = new Maptacular(rightRectangle.width, rightRectangle.height, 20);
+
 
         //    leftRectangle.mask = leftCircle;
         //    rightRectangle.mask = rightCircle;
@@ -255,8 +274,8 @@
             //Move the cat 1 pixel per frame
             if (showFrequency == counter) {
                 showLeftOrRight();
-                [leftCircle.x, leftCircle.y] = randomPosition();
-                [rightCircle.x, rightCircle.y] = randomPosition();
+                [leftCircle.x, leftCircle.y] = maptacular.getPoint('left');
+                [rightCircle.x, rightCircle.y] = maptacular.getPoint('right');
                 variation = getVariation();
                 canHit = true;
                 counter++;
@@ -266,8 +285,10 @@
             } else if (displayFor + showFrequency + leyway == counter) {
                 if (didHit) {
                     console.log('hit');
+                    maptacular.savePoint('left', leftCircle.x, leftCircle.y, true);
                 } else {
                     console.log('miss');
+                    maptacular.savePoint('left', leftCircle.x, leftCircle.y, false);
                     missCount += 1;
                 }
                 didHit = false;
@@ -315,11 +336,17 @@
         background.on('click', () => {
             console.log('clicked');
             clicked();
-        })
+        });
+
 
         background.on('tap', () => {
             clicked();
-        })
+        });
+
+        setTimeout(() => {
+            console.log('saving');
+            return maptacular.download();
+        }, 10* 1000);
 
 
         hideCircles();
@@ -331,10 +358,10 @@
     goFS.addEventListener("click", function () {
         toggleFullScreen();
         document.getElementById("wrapper").style.visibility = 'hidden';
-        document.getElementsByTagName("BODY")[0].style.height = '0';
+//        document.getElementsByTagName("BODY")[0].style.height = '0';
         setTimeout(() => {
             return initApp();
-        }, 1000);
+        }, 500);
 
     }, false);
 
