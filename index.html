@@ -42,9 +42,9 @@
     padding: 10px;
     float: left;
 }
-    /*.eye-map {*/
-        /*display: none;*/
-    /*}*/
+    .eye-map {
+        display: none;
+    }
 </style>
 <div class="eye-map" style="background-color: white;">
     <div id="left-eye" class="eye left">Left</div>
@@ -362,7 +362,7 @@
     goFS.addEventListener("click", function () {
         toggleFullScreen();
         document.getElementById("wrapper").style.visibility = 'hidden';
-//        document.getElementsByTagName("BODY")[0].style.height = '0';
+        document.getElementsByTagName("BODY")[0].style.height = '0';
         setTimeout(() => {
             return initApp();
         }, 500);

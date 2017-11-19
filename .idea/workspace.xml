@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8f2cb3d1-8604-4154-9653-031ed620bc8b" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maptacular/js/maptacular.js" afterPath="$PROJECT_DIR$/maptacular/js/maptacular.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,11 +18,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="266" column="33" lean-forward="true" selection-start-line="266" selection-start-column="33" selection-end-line="266" selection-end-column="33" />
+            <state relative-caret-position="229">
+              <caret line="365" column="26" lean-forward="true" selection-start-line="365" selection-start-column="26" selection-end-line="365" selection-end-column="26" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -30,11 +30,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="maptacular.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="maptacular.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/maptacular/js/maptacular.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="280" column="48" lean-forward="false" selection-start-line="280" selection-start-column="48" selection-end-line="280" selection-end-column="48" />
+            <state relative-caret-position="3351">
+              <caret line="254" column="24" lean-forward="false" selection-start-line="254" selection-start-column="24" selection-end-line="254" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -53,7 +53,7 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/maptacular/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
+            <state relative-caret-position="317">
               <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
               <folding />
             </state>
@@ -63,9 +63,11 @@
       <file leaf-file-name="stream.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/stream.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="795">
-              <caret line="86" column="6" lean-forward="false" selection-start-line="21" selection-start-column="4" selection-end-line="86" selection-end-column="6" />
-              <folding />
+            <state relative-caret-position="825">
+              <caret line="88" column="6" lean-forward="false" selection-start-line="88" selection-start-column="6" selection-end-line="88" selection-end-column="6" />
+              <folding>
+                <marker date="1511097821000" expanded="true" signature="9504:9527" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -155,8 +157,8 @@
         <option value="$PROJECT_DIR$/js/tools/webcam.js" />
         <option value="$PROJECT_DIR$/webvr-boilerplate/index.html" />
         <option value="$PROJECT_DIR$/stream.html" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/maptacular/js/maptacular.js" />
+        <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
   </component>
@@ -414,12 +416,12 @@
       <workItem from="1511017851036" duration="21905000" />
       <workItem from="1511048852738" duration="3874000" />
       <workItem from="1511085351835" duration="285000" />
-      <workItem from="1511087138061" duration="8205000" />
+      <workItem from="1511087138061" duration="8611000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36304000" />
+    <option name="totallyTimeSpent" value="36710000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="579" y="23" width="1101" height="1023" extended-state="0" />
@@ -472,7 +474,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2250">
           <caret line="150" column="0" lean-forward="true" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
-          <folding />
+          <folding>
+            <marker date="1511097821000" expanded="true" signature="9504:9527" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -532,7 +536,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <marker date="1511097821000" expanded="true" signature="9504:9527" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -661,7 +667,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="22" column="4" lean-forward="false" selection-start-line="22" selection-start-column="4" selection-end-line="55" selection-end-column="20" />
-          <folding />
+          <folding>
+            <marker date="1511097821000" expanded="true" signature="9504:9527" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -755,9 +763,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/stream.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="86" column="6" lean-forward="false" selection-start-line="21" selection-start-column="4" selection-end-line="86" selection-end-column="6" />
-          <folding />
+        <state relative-caret-position="825">
+          <caret line="88" column="6" lean-forward="false" selection-start-line="88" selection-start-column="6" selection-end-line="88" selection-end-column="6" />
+          <folding>
+            <marker date="1511097821000" expanded="true" signature="9504:9527" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -777,9 +787,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/maptacular/js/maptacular.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3351">
+          <caret line="254" column="24" lean-forward="false" selection-start-line="254" selection-start-column="24" selection-end-line="254" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/maptacular/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
+        <state relative-caret-position="317">
           <caret line="39" column="9" lean-forward="true" selection-start-line="39" selection-start-column="9" selection-end-line="39" selection-end-column="9" />
           <folding />
         </state>
@@ -787,19 +805,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="266" column="33" lean-forward="true" selection-start-line="266" selection-start-column="33" selection-end-line="266" selection-end-column="33" />
+        <state relative-caret-position="229">
+          <caret line="365" column="26" lean-forward="true" selection-start-line="365" selection-start-column="26" selection-end-line="365" selection-end-column="26" />
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/maptacular/js/maptacular.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="280" column="48" lean-forward="false" selection-start-line="280" selection-start-column="48" selection-end-line="280" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
