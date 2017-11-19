@@ -42,10 +42,14 @@
     padding: 10px;
     float: left;
 }
+    /*.eye-map {*/
+        /*display: none;*/
+    /*}*/
 </style>
 <div class="eye-map" style="background-color: white;">
     <div id="left-eye" class="eye left">Left</div>
     <div id="right-eye" class="eye right">Right</div>
+    <div id="scratch"></div>
 </div>
 <div id="wrapper">
     <button id="goFS">Start</button>
@@ -346,7 +350,7 @@
         setTimeout(() => {
             console.log('saving');
             return maptacular.download();
-        }, 5* 1000);
+        }, 15* 1000);
 
 
         hideCircles();

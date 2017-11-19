@@ -191,15 +191,58 @@ function Maptacular(width, height, magnification) {
         this.draw();
 
         var data = JSON.stringify(self.data);
-        var left = document.getElementsByTagName("canvas")[0].toDataURL();
-        var right = document.getElementsByTagName("canvas")[1].toDataURL();
 
         var doc = new jsPDF();
-        doc.setFontSize(40);
-        doc.text(0, 25, 'This is what I see');
-        doc.addImage(left, 'PNG', 0, 60, 90, 90);
-        doc.addImage(right, 'PNG', 95, 60, 90, 90);
+
+        ['left', 'right'].map(function (side) {
+
+            var offset = 10;  // mm
+            var index = 0;
+            if (side === 'right') {
+                offset += 85;
+                index = 1;
+            }
+
+            // Wipe the scratch canvas
+            document.getElementById('scratch')
+                .innerHTML = '<canvas id="canvas-background" width="' + self.width + '" height="' + self.height + '"></canvas>';
+
+            var canvas = document.getElementById('canvas-background');
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, self.width, self.height);
+            ctx.rect(0, 0, self.width, self.height);
+            ctx.stroke();
+
+            ctx.drawImage(
+                document.getElementsByClassName("heatmap-canvas")[index], 0, 0);
+
+            doc.addImage(
+                document.getElementById("canvas-background").toDataURL(),
+                'PNG',
+                offset,
+                50,
+                80,
+                80
+            );
+
+        });
+
         doc.save();
+
+        //
+        // this.draw();
+        //
+        // var data = JSON.stringify(self.data);
+        // var left = document.getElementsByTagName("canvas")[0].toDataURL();
+        // var right = document.getElementsByTagName("canvas")[1].toDataURL();
+        //
+        // var doc = new jsPDF();
+        // doc.setFontSize(40);
+        // doc.text(0, 25, 'This is what I see');
+        // doc.addImage(left, 'PNG', 0, 60, 90, 90);
+        // doc.addImage(right, 'PNG', 95, 60, 90, 90);
+        // doc.save();
 
     };
 
@@ -234,8 +277,8 @@ function Maptacular(width, height, magnification) {
                 for (var j = 0; j < self.height; j++) {
                     if (self.data[side][i][j] === false) {
                         heatmaps[side].addData({
-                            x: i,
-                            y: j,
+                            x: Math.floor(i * .9),
+                            y: Math.floor(j * .9),
                             value: 1,
                             radius: 50
                         });
