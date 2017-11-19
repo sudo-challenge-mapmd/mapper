@@ -138,16 +138,15 @@
 
         stage.addChild(sprite);
 
-        sprite = new PIXI.Sprite(texture);
+        sprite2 = new PIXI.Sprite(texture);
 
-        sprite.x = renderer.width/2;
-        sprite.y = 0;
-        sprite.height = renderer.height;
-        sprite.width = renderer.width/2;
-        sprite.filters = [new BarrelFilter(1.2)];
+        sprite2.x = renderer.width/2;
+        sprite2.y = 0;
+        sprite2.height = renderer.height;
+        sprite2.width = renderer.width/2;
+//        sprite2.filters = [new BarrelFilter(1.2, {x: 10, y: 0})];
 
-        stage.addChild(sprite);
-
+        stage.addChild(sprite2);
 
         renderer.render(stage);
 
