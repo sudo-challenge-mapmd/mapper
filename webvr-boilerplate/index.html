@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Web VR boilerplate</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            color: #fff;
+            margin: 0px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Position the button on the bottom of the page. */
+        #ui {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-family: 'Karla', sans-serif;
+            z-index: 1;
+        }
+
+        a#magic-window {
+            display: block;
+            color: white;
+            margin-top: 1em;
+        }
+    </style>
+</head>
+
+<body>
+<div id="ui">
+    <div id="vr-button"></div>
+    <a id="magic-window" href="#">Try it without a headset</a>
+</div>
+</body>
+
+<script>
+    /*
+     * Debug parameters.
+     */
+    WebVRConfig = {
+        /**
+         * webvr-polyfill configuration
+         */
+
+        // Forces availability of VR mode.
+        //FORCE_ENABLE_VR: true, // Default: false.
+        // Complementary filter coefficient. 0 for accelerometer, 1 for gyro.
+        //K_FILTER: 0.98, // Default: 0.98.
+        // How far into the future to predict during fast motion.
+        //PREDICTION_TIME_S: 0.040, // Default: 0.040 (in seconds).
+        // Flag to disable touch panner. In case you have your own touch controls
+        //TOUCH_PANNER_DISABLED: true, // Default: false.
+        // Enable yaw panning only, disabling roll and pitch. This can be useful for
+        // panoramas with nothing interesting above or below.
+        //YAW_ONLY: true, // Default: false.
+        // Enable the deprecated version of the API (navigator.getVRDevices).
+        //ENABLE_DEPRECATED_API: true, // Default: false.
+        // Scales the recommended buffer size reported by WebVR, which can improve
+        // performance. Making this very small can lower the effective resolution of
+        // your scene.
+        BUFFER_SCALE: 0.5, // default: 1.0
+        // Allow VRDisplay.submitFrame to change gl bindings, which is more
+        // efficient if the application code will re-bind it's resources on the
+        // next frame anyway.
+        // Dirty bindings include: gl.FRAMEBUFFER_BINDING, gl.CURRENT_PROGRAM,
+        // gl.ARRAY_BUFFER_BINDING, gl.ELEMENT_ARRAY_BUFFER_BINDING,
+        // and gl.TEXTURE_BINDING_2D for texture unit 0
+        // Warning: enabling this might lead to rendering issues.
+        //DIRTY_SUBMIT_FRAME_BINDINGS: true // default: false
+    };
+</script>
+
+<script src="../pixi.js"></script>
+<!--
+  A polyfill for Promises. Needed for IE and Edge.
+-->
+<script src="node_modules/es6-promise/dist/es6-promise.min.js"></script>
+
+<!--
+  three.js 3d library
+-->
+<script src="node_modules/three/build/three.min.js"></script>
+
+<!--
+  VRControls.js acquires positional information from connected VR devices and applies the transformations to a three.js camera object.
+-->
+<script src="node_modules/three/examples/js/controls/VRControls.js"></script>
+
+<!--
+  VREffect.js handles stereo camera setup and rendering.
+-->
+<script src="node_modules/three/examples/js/effects/VREffect.js"></script>
+
+<!--
+  A polyfill for WebVR using the Device{Motion,Orientation}Event API.
+-->
+<script src="node_modules/webvr-polyfill/build/webvr-polyfill.min.js"></script>
+
+<!--
+  A set of UI controls for entering VR mode.
+-->
+<script src="node_modules/webvr-ui/build/webvr-ui.min.js"></script>
+
+
+<script>
+    width = window.innerWidth;
+    height = window.innerHeight;
+
+    //-------------------------------------------------------------------------------------
+    // 3D Scene canvas
+    //-------------------------------------------------------------------------------------
+    var scene_3D = new THREE.Scene();
+    scene_3D.fog = new THREE.Fog("#a1a1a1", 2000, 4000);
+
+    var camera = new THREE.PerspectiveCamera(75, width / height, 1, 10000);
+    camera.position.set(0, 0, 700);
+    camera.updateProjectionMatrix();
+
+    var canvas_3D = new THREE.WebGLRenderer({antialias: true});
+    canvas_3D.setSize(width, height);
+    canvas_3D.setClearColor(scene_3D.fog.color, 1);
+    document.body.appendChild(canvas_3D.domElement);
+
+    var geometry = new THREE.BoxGeometry(500, 500, 500);
+    var material = new THREE.MeshNormalMaterial();
+    var cube = new THREE.Mesh(geometry, material);
+    cube.position.z = -500;
+    cube.rotation.z = -45;
+    scene_3D.add(cube);
+
+    //-------------------------------------------------------------------------------------
+    // 2D UI canvas
+    //-------------------------------------------------------------------------------------
+    var scene_UI = new PIXI.Stage(0x66FF99);
+
+    var canvas_UI = PIXI.autoDetectRenderer(width, height, {transparent: true});
+    canvas_UI.view.style.position = "absolute";
+    canvas_UI.view.style.top = "0px";
+    canvas_UI.view.style.left = "0px";
+
+    var graphics = new PIXI.Graphics();
+    graphics.beginFill(0xe60630);
+    graphics.moveTo(width / 2 - 200, height / 2 + 100);
+    graphics.lineTo(width / 2 - 200, height / 2 - 100);
+    graphics.lineTo(width / 2 + 200, height / 2 - 100);
+    graphics.lineTo(width / 2 + 200, height / 2 + 100);
+    graphics.endFill();
+
+    scene_UI.addChild(graphics);
+
+    //-------------------------------------------------------------------------------------
+    // Map 2D UI canvas on 3D Plane
+    //-------------------------------------------------------------------------------------
+    var texture_UI = new THREE.Texture(canvas_UI.view);
+    texture_UI.needsUpdate = true;
+
+    var material_UI = new THREE.MeshBasicMaterial({map: texture_UI, side: THREE.DoubleSide});
+    material_UI.transparent = true;
+
+    var mesh_UI = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material_UI);
+    mesh_UI.position.set(0, 0, 0);
+    scene_3D.add(mesh_UI);
+
+    effect = new THREE.VREffect(canvas_3D);
+    effect.setSize(window.innerWidth, window.innerHeight);
+
+    //-------------------------------------------------------------------------------------
+    // Render Animation
+    //-------------------------------------------------------------------------------------
+    function animate() {
+        requestAnimationFrame(animate);
+        canvas_UI.render(scene_UI);
+
+        cube.rotation.y += 0.01;
+        effect.render(scene_3D, camera);
+    }
+    animate();
+
+    //// Last time the scene was rendered.
+    //var lastRenderTime = 0;
+    //// Currently active VRDisplay.
+    //var vrDisplay;
+    //// How big of a box to render.
+    //var boxSize = 5;
+    //// Various global THREE.Objects.
+    //var scene;
+    //var cube;
+    //var controls;
+    //var effect;
+    //var camera;
+    //// EnterVRButton for rendering enter/exit UI.
+    //var vrButton;
+    //var scene_UI, canvas_UI;
+    //
+    //
+    //function onLoad() {
+    //  // Setup three.js WebGL renderer. Note: Antialiasing is a big performance hit.
+    //  // Only enable it if you actually need to.
+    //  var renderer = new THREE.WebGLRenderer({antialias: true});
+    //  renderer.setPixelRatio(window.devicePixelRatio);
+    //
+    //  // Append the canvas element created by the renderer to document body element.
+    //  document.body.appendChild(renderer.domElement);
+    //
+    //  // Create a three.js scene.
+    //  scene = new THREE.Scene();
+    //
+    //  // Create a three.js camera.
+    //  var aspect = window.innerWidth / window.innerHeight;
+    //  camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 10000);
+    //
+    //  controls = new THREE.VRControls(camera);
+    //  controls.standing = true;
+    //  camera.position.y = controls.userHeight;
+    //
+    //  // Apply VR stereo rendering to renderer.
+    //  effect = new THREE.VREffect(renderer);
+    //  effect.setSize(window.innerWidth, window.innerHeight);
+    //
+    //  // Add a repeating grid as a skybox.
+    //  var loader = new THREE.TextureLoader();
+    //  loader.load('img/box.png', onTextureLoaded);
+    //
+    //  // Create 3D objects.
+    //  var geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+    //  var material = new THREE.MeshNormalMaterial();
+    //  cube = new THREE.Mesh(geometry, material);
+    //
+    //  // Position cube mesh to be right in front of you.
+    //  cube.position.set(0, controls.userHeight, -1);
+    //
+    //  // Add cube mesh to your three.js scene
+    ////  scene.add(cube);
+    //
+    //  // pixi
+    //    width = window.innerWidth;
+    //    height = window.innerHeight;
+    //
+    //    scene_UI = new PIXI.Stage( 0x66FF99 );
+    //
+    //    canvas_UI = PIXI.autoDetectRenderer(width, height, {transparent:true});
+    //    canvas_UI.view.style.position = "absolute";
+    //    canvas_UI.view.style.top = "0px";
+    //    canvas_UI.view.style.left = "0px";
+    //
+    //    var graphics = new PIXI.Graphics();
+    //    graphics.beginFill( 0xe60630 );
+    //    graphics.moveTo( width/2-200, height/2+100 );
+    //    graphics.lineTo( width/2-200, height/2-100 );
+    //    graphics.lineTo( width/2+200, height/2-100 );
+    //    graphics.lineTo( width/2+200, height/2+100 );
+    //    graphics.endFill();
+    //
+    //    scene_UI.addChild( graphics );
+    //
+    //    var texture_UI = new THREE.Texture( canvas_UI.view );
+    //    texture_UI.needsUpdate = true;
+    //
+    //    var material_UI = new THREE.MeshBasicMaterial( {map: texture_UI, side:THREE.DoubleSide } );
+    //    material_UI.transparent = true;
+    //
+    //    var mesh_UI = new THREE.Mesh( new THREE.PlaneGeometry(width, height), material_UI );
+    //    mesh_UI.position.set(0,0,0);
+    //
+    //    scene.add(mesh_UI);
+    //
+    //    //
+    //
+    //  window.addEventListener('resize', onResize, true);
+    //  window.addEventListener('vrdisplaypresentchange', onResize, true);
+    //
+    //
+    //  // Initialize the WebVR UI.
+    //  var uiOptions = {
+    //    color: 'black',
+    //    background: 'white',
+    //    corners: 'square'
+    //  };
+    //  vrButton = new webvrui.EnterVRButton(renderer.domElement, uiOptions);
+    //  vrButton.on('exit', function() {
+    //    camera.quaternion.set(0, 0, 0, 1);
+    //    camera.position.set(0, controls.userHeight, 0);
+    //  });
+    //  vrButton.on('hide', function() {
+    //    document.getElementById('ui').style.display = 'none';
+    //  });
+    //  vrButton.on('show', function() {
+    //    document.getElementById('ui').style.display = 'inherit';
+    //  });
+    //  document.getElementById('vr-button').appendChild(vrButton.domElement);
+    //  document.getElementById('magic-window').addEventListener('click', function() {
+    //    vrButton.requestEnterFullscreen();
+    //  });
+    //}
+    //
+    //function onTextureLoaded(texture) {
+    //  texture.wrapS = THREE.RepeatWrapping;
+    //  texture.wrapT = THREE.RepeatWrapping;
+    //  texture.repeat.set(boxSize, boxSize);
+    //
+    //  var geometry = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
+    //  var material = new THREE.MeshBasicMaterial({
+    //    map: texture,
+    //    color: 0x01BE00,
+    //    side: THREE.BackSide
+    //  });
+    //
+    //  // Align the skybox to the floor (which is at y=0).
+    //  skybox = new THREE.Mesh(geometry, material);
+    //  skybox.position.y = boxSize/2;
+    //  scene.add(skybox);
+    //
+    //  // For high end VR devices like Vive and Oculus, take into account the stage
+    //  // parameters provided.
+    //  setupStage();
+    //}
+    //
+    //
+    //
+    //// Request animation frame loop function
+    //function animate(timestamp) {
+    //  var delta = Math.min(timestamp - lastRenderTime, 500);
+    //  lastRenderTime = timestamp;
+    //
+    //  // Apply rotation to cube mesh
+    //  cube.rotation.y += delta * 0.0006;
+    //
+    //  // Only update controls if we're presenting.
+    //  if (vrButton.isPresenting()) {
+    //    controls.update();
+    //  }
+    //  // Render the scene.
+    //
+    //    canvas_UI.render(scene_UI);
+    //
+    //  effect.render(scene, camera);
+    //
+    //  vrDisplay.requestAnimationFrame(animate);
+    //}
+    //
+    //function onResize(e) {
+    //  effect.setSize(window.innerWidth, window.innerHeight);
+    //  camera.aspect = window.innerWidth / window.innerHeight;
+    //  camera.updateProjectionMatrix();
+    //}
+    //
+    //// Get the HMD, and if we're dealing with something that specifies
+    //// stageParameters, rearrange the scene.
+    //function setupStage() {
+    //  navigator.getVRDisplays().then(function(displays) {
+    //    if (displays.length > 0) {
+    //      vrDisplay = displays[0];
+    //      if (vrDisplay.stageParameters) {
+    //        setStageDimensions(vrDisplay.stageParameters);
+    //      }
+    //      vrDisplay.requestAnimationFrame(animate);
+    //    }
+    //  });
+    //}
+    //
+    //function setStageDimensions(stage) {
+    //  // Make the skybox fit the stage.
+    //  var material = skybox.material;
+    //  scene.remove(skybox);
+    //
+    //  // Size the skybox according to the size of the actual stage.
+    //  var geometry = new THREE.BoxGeometry(stage.sizeX, boxSize, stage.sizeZ);
+    //  skybox = new THREE.Mesh(geometry, material);
+    //
+    //  // Place it on the floor.
+    //  skybox.position.y = boxSize/2;
+    //  scene.add(skybox);
+    //
+    //  // Place the cube in the middle of the scene, at user height.
+    //  cube.position.set(0, controls.userHeight, 0);
+    //}
+    //
+    //window.addEventListener('load', onLoad);
+
+</script>
+
+</html>

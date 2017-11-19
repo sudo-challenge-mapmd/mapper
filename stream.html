@@ -19,6 +19,65 @@
 }
 </style>
 <script type="text/javascript">
+    class BarrelFilter extends PIXI.Filter {
+        constructor(power = 1.2, offset = { x: 0, y: 0 }) {
+            super(undefined, BarrelFilter.fragment);
+            this.uniforms.dimensions = { x: 0, y: 0 };
+            this.uniforms.filterArea = { x: 0, y: 0, z: 0, w: 0 };
+            this.uniforms.power = power;
+            this.uniforms.offset = offset;
+        }
+        apply(filterManager, input, output) {
+            this.uniforms.dimensions.x = input.sourceFrame.width;
+            this.uniforms.dimensions.y = input.sourceFrame.height;
+            this.uniforms.filterArea.x = output.size.width;
+            this.uniforms.filterArea.y = output.size.height;
+            this.uniforms.filterArea.z = input.sourceFrame.x;
+            this.uniforms.filterArea.w = input.sourceFrame.y;
+            filterManager.applyFilter(this, input, output);
+        }
+    }
+    BarrelFilter.fragment = `
+        precision highp float;
+
+        varying vec2 vTextureCoord;
+        uniform sampler2D uSampler;
+        uniform vec2 dimensions;
+        uniform vec4 filterArea;
+
+        uniform float power;
+        uniform vec2 offset;
+
+        vec2 mapCoord( vec2 coord ){
+            coord *= filterArea.xy;
+            coord += filterArea.zw;
+            return coord;
+        }
+
+        vec2 unmapCoord( vec2 coord ){
+            coord -= filterArea.zw;
+            coord /= filterArea.xy;
+            return coord;
+        }
+
+        // Given a vec2 in [-1,+1], generate a texture coord in [0,+1]
+        vec2 barrelDistortion(vec2 p)
+        {
+            float theta  = atan(p.y, p.x);
+            float radius = length(p);
+            radius = pow(radius, power);
+            p.x = radius * cos(theta);
+            p.y = radius * sin(theta);
+            return 0.5 * (p + 1.0);
+        }
+
+        void main(){
+            vec2 uv = mapCoord(vTextureCoord) / dimensions;
+            uv = barrelDistortion(uv*2.0 - 1.0 + offset);
+            gl_FragColor = vec4(texture2D(uSampler, unmapCoord(uv*dimensions)).rgb, 1.0);
+        }
+    `;
+
     //Create the renderer
     var stage = new PIXI.Container(),
         renderer = PIXI.autoDetectRenderer(0, 0);
@@ -66,9 +125,21 @@
         sprite.x = 0;
         sprite.y = 0;
         sprite.height = renderer.height;
-        sprite.width = renderer.width;
+        sprite.width = renderer.width/2;
+        sprite.filters = [new BarrelFilter(1.2)];
 
         stage.addChild(sprite);
+
+        sprite = new PIXI.Sprite(texture);
+
+        sprite.x = renderer.width/2;
+        sprite.y = 0;
+        sprite.height = renderer.height;
+        sprite.width = renderer.width/2;
+        sprite.filters = [new BarrelFilter(1.2)];
+
+        stage.addChild(sprite);
+
 
         renderer.render(stage);
 
