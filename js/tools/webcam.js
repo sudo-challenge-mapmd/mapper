@@ -1,5 +1,11 @@
 var Webcam = (function() {
 
+    const constraints = {
+        advanced: [{
+            facingMode: "environment"
+        }]
+    };
+
 	navigator.getMedia = ( navigator.getUserMedia ||
 							navigator.webkitGetUserMedia ||
 							navigator.mozGetUserMedia ||
@@ -21,7 +27,7 @@ var Webcam = (function() {
 		init : function()
 		{
 			if(!Webcam.isAvailable)return;
-			navigator.getMedia({video: true},
+			navigator.getMedia({video: constraints},
 			this._onSuccess.bind(this), this._onError.bind(this));
 
 		},
