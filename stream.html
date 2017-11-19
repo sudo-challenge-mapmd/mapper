@@ -7,6 +7,7 @@
 </head>
 <script src="pixi.js"></script>
 <script src="js/tools/webcam.js"></script>
+<script src="js/tools/tools.js"></script>
 <script src="js/tools/ColorMapFilter.js"></script>
 <script src="js/tools/webcam.js"></script>
 <body>
@@ -31,6 +32,7 @@
     //This `setup` function will run when the image has loaded
 
     const webcam = new Webcam();
+    webcam.onReady.add(onWebcam);
     webcam.init();
 
     function setup() {
@@ -43,11 +45,40 @@
 //        //Add the cat to the stage
 //        stage.addChild(cat);
 
-        moveSprite
+        //Render the stage
+        renderer.render(stage);
+    }
+
+    let texture;
+    let sprite;
+
+    function onWebcam() {
+        console.log('webcam loaded');
+        console.log(webcam.video);
+        texture = new PIXI.Texture.fromVideo(webcam.video);
+        sprite = new PIXI.Sprite(texture);
+
+        sprite.x = 0;
+        sprite.y = 0;
+        sprite.height = renderer.height;
+        sprite.width = renderer.width;
 
         stage.addChild(sprite);
 
-        //Render the stage
+        renderer.render(stage);
+
+        loop();
+
+//        requestAnimationFrame(loop);
+
+    }
+
+    function loop() {
+        setTimeout(loop, 50);
+
+        sprite.texture.update();
+        setTimeout(() => loop(), 20);
+        console.log('loop');
         renderer.render(stage);
     }
 
