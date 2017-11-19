@@ -79,10 +79,9 @@
     }
 
     function loop() {
-        setTimeout(loop, 50);
+        setTimeout(loop, 70);
 
         sprite.texture.update();
-        setTimeout(() => loop(), 20);
         console.log('loop');
         renderer.render(stage);
     }
