@@ -6,10 +6,8 @@
     <title>mapMD</title>
 </head>
 <script src="pixi.js"></script>
-<script src="js/tools/webcam.js"></script>
 <script src="js/tools/tools.js"></script>
 <script src="js/tools/ColorMapFilter.js"></script>
-<script src="js/tools/webcam.js"></script>
 <script src="js/tools/animation.js"></script>
 <script src="js/tools/tween.js"></script>
 <script src="js/vision-filter.js"></script>
@@ -109,10 +107,6 @@
 //            .load(setup);
 
     //This `setup` function will run when the image has loaded
-
-    const webcam = new Webcam();
-    webcam.onReady.add(onWebcam);
-    webcam.init();
 
     function setup() {
 
