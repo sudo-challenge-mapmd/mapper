@@ -12,6 +12,7 @@
 <script src="js/tools/webcam.js"></script>
 <script src="js/tools/animation.js"></script>
 <script src="js/tools/tween.js"></script>
+<script src="js/vision-filter.js"></script>
 <body>
 <style>* {
     padding: 0;
@@ -88,131 +89,6 @@
         }
     `;
 
-    class VisionMapFilter extends PIXI.Filter {
-        constructor() {
-            super(VisionMapFilter.vertexShader, VisionMapFilter.fragmentShader);
-            this.uniforms.nssm = new PIXI.Matrix();
-            this.uniforms.inssm = new PIXI.Matrix();
-
-            this.uniforms.stage = 0;
-        }
-        apply(filterManager, input, output) {
-            filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.nssm);
-            filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.inssm);
-            this.uniforms.inssm.invert();
-
-            filterManager.applyFilter(this, input, output);
-        }
-    }
-    VisionMapFilter.vertexShader = `
-            attribute vec2 aVertexPosition;
-            attribute vec2 aTextureCoord;
-            uniform mat3 projectionMatrix;
-            uniform mat3 filterMatrix;
-            varying vec2 vTextureCoord;
-            varying vec2 vFilterCoord;
-            void main(void){
-               gl_Position = vec4((projectionMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);
-               vFilterCoord = ( filterMatrix * vec3( aTextureCoord, 1.0) ).xy;
-               vTextureCoord = vFilterCoord;
-            }
-        `;
-    VisionMapFilter.fragmentShader = `
-            precision highp float;
-
-            varying vec2 vTextureCoord;
-            uniform sampler2D uSampler;
-
-            uniform mat3 nssm;
-            uniform mat3 inssm;
-            uniform float stage;
-
-            vec2 mapCoord( vec2 coord ){
-                return (vec3(coord, 1.0) * nssm).xy;
-            }
-
-            vec2 unmapCoord( vec2 coord ){
-                return (vec3(coord, 1.0) * inssm).xy;
-            }
-
-            vec2 warpAround(vec2 uv, vec2 p, float rInner, float rOuter) {
-                vec2 d = p - uv;
-                float l = length(d);
-                vec2 n = normalize(d);
-                float r = rInner;
-                float R = rOuter;
-
-                // float x = max(R - l, 0.0);
-                // float m = pow(x/R, 0.5);
-                // float m = smoothstep(0.0, R, x);
-                float x = 1.0 - clamp((l - r)/(R - r), 0.0, 1.0);
-                float m = x;
-
-                return n * m * l;
-            }
-
-            vec3 brightnessContrast(vec3 value, float brightness, float contrast){
-                return (value - 0.5) * contrast + 0.5 + brightness;
-            }
-
-            vec3 enhance(vec3 col, vec2 uv, vec2 p, float rInner, float rOuter){
-                vec2 d = p - uv;
-                float l = length(d);
-                float r = rOuter - rInner;
-                float R = rOuter;
-
-                float x = max(R - l, 0.0);
-                float cm = x;
-                return brightnessContrast(col, cm * 2.0, cm * 8.0 + 1.0);
-            }
-
-            vec3 darken(vec3 col, vec2 uv, vec2 p, float rInner, float rOuter){
-                vec2 d = p - uv;
-                float l = length(d);
-                float r = rInner;
-                float R = rOuter;
-
-                float x = max(r - l, 0.0);
-                return brightnessContrast(col, -x*10., 1.0);
-            }
-
-            #define R0 vec2(0.5, 0.5), 0.1, 0.3
-
-            void main(){
-                float warpTransition = clamp(stage, 1.0, 2.0) - 1.0;
-                float visionTransition = clamp(stage, 0.0, 1.0);
-
-                vec2 uv = mapCoord(vTextureCoord);
-                vec2 uv0 = uv;
-
-                vec2 delta = vec2(0.0);
-                delta += warpAround(uv, R0);
-                uv += delta * warpTransition;
-
-                uv -= delta * (1.0 - visionTransition);
-
-                vec3 col = texture2D(uSampler, unmapCoord(uv)).rgb;
-                vec3 e = vec3(0.0);
-
-                // brightness / contrast
-                /*
-                e = col;
-                // e = enhance(e, uv, R1);
-                // e = enhance(e, uv, R2);
-                e = enhance(e, uv, vec2(0.7, 0.5), 0.02, 0.1);
-                col = mix(e, col, transition);
-                */
-
-                // simulate vision
-                e = col;
-                e = darken(e, uv0, R0);
-                col = mix(e, col, 0.0);
-
-                gl_FragColor = vec4(col, 1.0);
-            }
-        `;
-    let visionMapFilter = new VisionMapFilter();
-
     //Create the renderer
     var stage = new PIXI.Container(),
         renderer = PIXI.autoDetectRenderer(0, 0);
@@ -250,6 +126,9 @@
 
     let texture;
     let sprite;
+
+    let ri = 0.15; let ro = 0.3; let c = {x:0.48, y:0.42};
+    let visionMapFilter = new VisionMapFilter(ri, ro, c);
 
     function onWebcam() {
         console.log('webcam loaded');
@@ -292,15 +171,27 @@
     }
 
     var transitionId = null;
+    var transition = 0;
     var mode = 0;
-    var nModes = 3;
     function pointerUp(){
         window.cancelAnimationFrame(transitionId);
-        var start = visionMapFilter.uniforms.stage;
-        mode = (mode + 1) % (nModes + 1);
+        var start = transition;
+        mode = (mode + 1) % 2;
         var end = mode;
-        transitionId = Math.animation(start, end, 200, Tween.Quad.easeIn, (x)=>{visionMapFilter.uniforms.stage = x});
+        transitionId = Math.animation(start, end, 200, Tween.Quad.easeIn, (x)=>{
+            transition = x;
+            updateFilter();
+        });
     }
+
+    function updateFilter(){
+        var x = transition;
+        visionMapFilter.uniforms.warp = x;
+        visionMapFilter.uniforms.darkening = x;
+        visionMapFilter.uniforms.contrast = 0;
+    }
+
+    updateFilter(transition);
 
     stage.interactive = true; 
     stage.on('tap', pointerUp);

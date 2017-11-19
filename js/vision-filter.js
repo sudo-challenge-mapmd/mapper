@@ -9,6 +9,7 @@ class VisionMapFilter extends PIXI.Filter {
         this.uniforms.center = center;
         this.uniforms.warp = 1;
         this.uniforms.darkening = 1;
+        this.uniforms.contrast = 0;
     }
     apply(filterManager, input, output) {
         filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.nssm);
@@ -45,6 +46,7 @@ VisionMapFilter.fragmentShader = `
         uniform vec2 center;
         uniform float warp;
         uniform float darkening;
+        uniform float contrast;
 
         vec2 mapCoord( vec2 coord ){
             return (vec3(coord, 1.0) * nssm).xy;
@@ -119,11 +121,9 @@ VisionMapFilter.fragmentShader = `
             vec3 e = vec3(0.0);
 
             // brightness / contrast
-            /*
             e = col;
             e = enhance(e, uv, vec2(0.5), rInner, rOuter);
-            col = mix(e, col, transition);
-            */
+            col = mix(col, e, contrast);
 
             // simulate vision
             e = col;
