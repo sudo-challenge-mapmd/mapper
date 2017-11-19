@@ -26,6 +26,9 @@
             this.uniforms.filterArea = { x: 0, y: 0, z: 0, w: 0 };
             this.uniforms.power = power;
             this.uniforms.offset = offset;
+
+            this.uniforms.nssm = new PIXI.Matrix();
+            this.uniforms.inssm = new PIXI.Matrix();
         }
         apply(filterManager, input, output) {
             this.uniforms.dimensions.x = input.sourceFrame.width;
@@ -34,6 +37,11 @@
             this.uniforms.filterArea.y = output.size.height;
             this.uniforms.filterArea.z = input.sourceFrame.x;
             this.uniforms.filterArea.w = input.sourceFrame.y;
+
+            filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.nssm);
+            filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.inssm);
+            this.uniforms.inssm.invert();
+
             filterManager.applyFilter(this, input, output);
         }
     }
@@ -41,6 +49,7 @@
         precision highp float;
 
         varying vec2 vTextureCoord;
+        varying vec2 vFilterCoord;
         uniform sampler2D uSampler;
         uniform vec2 dimensions;
         uniform vec4 filterArea;
@@ -48,16 +57,15 @@
         uniform float power;
         uniform vec2 offset;
 
+        uniform mat3 nssm;
+        uniform mat3 inssm;
+
         vec2 mapCoord( vec2 coord ){
-            coord *= filterArea.xy;
-            coord += filterArea.zw;
-            return coord;
+            return (vec3(coord, 1.0) * nssm).xy;
         }
 
         vec2 unmapCoord( vec2 coord ){
-            coord -= filterArea.zw;
-            coord /= filterArea.xy;
-            return coord;
+            return (vec3(coord, 1.0) * inssm).xy;
         }
 
         // Given a vec2 in [-1,+1], generate a texture coord in [0,+1]
@@ -72,9 +80,9 @@
         }
 
         void main(){
-            vec2 uv = mapCoord(vTextureCoord) / dimensions;
+            vec2 uv = mapCoord(vTextureCoord);
             uv = barrelDistortion(uv*2.0 - 1.0 + offset);
-            gl_FragColor = vec4(texture2D(uSampler, unmapCoord(uv*dimensions)).rgb, 1.0);
+            gl_FragColor = texture2D(uSampler, unmapCoord(uv));
         }
     `;
 
@@ -130,15 +138,16 @@
 
         stage.addChild(sprite);
 
-        sprite2 = new PIXI.Sprite(texture);
+        sprite = new PIXI.Sprite(texture);
 
-        sprite2.x = renderer.width/2;
-        sprite2.y = 0;
-        sprite2.height = renderer.height;
-        sprite2.width = renderer.width/2;
-//        sprite2.filters = [new BarrelFilter(1.2, {x: 10, y: 0})];
+        sprite.x = renderer.width/2;
+        sprite.y = 0;
+        sprite.height = renderer.height;
+        sprite.width = renderer.width/2;
+        sprite.filters = [new BarrelFilter(1.2)];
 
-        stage.addChild(sprite2);
+        stage.addChild(sprite);
+
 
         renderer.render(stage);
 
@@ -152,7 +161,6 @@
         setTimeout(loop, 70);
 
         sprite.texture.update();
-        console.log('loop');
         renderer.render(stage);
     }
 
