@@ -37,6 +37,72 @@
 <script type="text/javascript">
     //Create the renderer
     //    document.documentElement.requestFullscreen();
+    class BarrelFilter extends PIXI.Filter {
+        constructor(power = 1.2, offset = { x: 0, y: 0 }) {
+            super(undefined, BarrelFilter.fragment);
+            this.uniforms.dimensions = { x: 0, y: 0 };
+            this.uniforms.filterArea = { x: 0, y: 0, z: 0, w: 0 };
+            this.uniforms.power = power;
+            this.uniforms.offset = offset;
+
+            this.uniforms.nssm = new PIXI.Matrix();
+            this.uniforms.inssm = new PIXI.Matrix();
+        }
+        apply(filterManager, input, output) {
+            this.uniforms.dimensions.x = input.sourceFrame.width;
+            this.uniforms.dimensions.y = input.sourceFrame.height;
+            this.uniforms.filterArea.x = output.size.width;
+            this.uniforms.filterArea.y = output.size.height;
+            this.uniforms.filterArea.z = input.sourceFrame.x;
+            this.uniforms.filterArea.w = input.sourceFrame.y;
+
+            filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.nssm);
+            filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.inssm);
+            this.uniforms.inssm.invert();
+
+            filterManager.applyFilter(this, input, output);
+        }
+    }
+    BarrelFilter.fragment = `
+        precision highp float;
+
+        varying vec2 vTextureCoord;
+        varying vec2 vFilterCoord;
+        uniform sampler2D uSampler;
+        uniform vec2 dimensions;
+        uniform vec4 filterArea;
+
+        uniform float power;
+        uniform vec2 offset;
+
+        uniform mat3 nssm;
+        uniform mat3 inssm;
+
+        vec2 mapCoord( vec2 coord ){
+            return (vec3(coord, 1.0) * nssm).xy;
+        }
+
+        vec2 unmapCoord( vec2 coord ){
+            return (vec3(coord, 1.0) * inssm).xy;
+        }
+
+        // Given a vec2 in [-1,+1], generate a texture coord in [0,+1]
+        vec2 barrelDistortion(vec2 p)
+        {
+            float theta  = atan(p.y, p.x);
+            float radius = length(p);
+            radius = pow(radius, power);
+            p.x = radius * cos(theta);
+            p.y = radius * sin(theta);
+            return 0.5 * (p + 1.0);
+        }
+
+        void main(){
+            vec2 uv = mapCoord(vTextureCoord);
+            uv = barrelDistortion(uv*2.0 - 1.0 + offset);
+            gl_FragColor = texture2D(uSampler, unmapCoord(uv));
+        }
+    `;
 
     function toggleFullScreen() {
         var doc = window.document;
@@ -72,7 +138,7 @@
             {antialias: false, transparent: false, resolution: 1}
         );
 
-        const circleSize = 16;
+        const circleSize = 8;
         const centerCircleSize = 5;
 
         renderer.view.style.position = "absolute";
@@ -102,6 +168,7 @@
         leftRectangle.beginFill(0, 0);
         leftRectangle.drawRect(0, 0, renderer.width / 2, renderer.height);
         leftRectangle.endFill();
+        leftRectangle.filters = [new BarrelFilter(1.2)];
         stage.addChild(leftRectangle);
 
         const leftCircle = new Graphics();
@@ -111,7 +178,7 @@
         leftRectangle.addChild(leftCircle);
 
         const leftFocusCircle = new Graphics();
-        leftFocusCircle.beginFill(0xFFFFFF);
+        leftFocusCircle.beginFill(0xfff000);
         leftFocusCircle.drawCircle(renderer.width / 4, renderer.height / 2, centerCircleSize);
         leftFocusCircle.endFill();
         leftRectangle.addChild(leftFocusCircle);
@@ -125,6 +192,7 @@
         rightRectangle.beginFill(0, 0);
         rightRectangle.drawRect(renderer.width / 2, 0, renderer.width / 2, renderer.height);
         rightRectangle.endFill();
+        rightRectangle.filters = [new BarrelFilter(1.2)];
         stage.addChild(rightRectangle);
 
         const rightCircle = new Graphics();
@@ -134,7 +202,7 @@
         rightRectangle.addChild(rightCircle);
 
         const rightFocusCircle = new Graphics();
-        rightFocusCircle.beginFill(0xFFFFFF);
+        rightFocusCircle.beginFill(0xfff000);
         rightFocusCircle.drawCircle(3 * renderer.width / 4, renderer.height / 2, centerCircleSize);
         rightFocusCircle.endFill();
         rightRectangle.addChild(rightFocusCircle);
