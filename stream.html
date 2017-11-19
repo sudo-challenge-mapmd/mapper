@@ -10,6 +10,8 @@
 <script src="js/tools/tools.js"></script>
 <script src="js/tools/ColorMapFilter.js"></script>
 <script src="js/tools/webcam.js"></script>
+<script src="js/tools/animation.js"></script>
+<script src="js/tools/tween.js"></script>
 <body>
 <style>* {
     padding: 0;
@@ -91,11 +93,14 @@
             super(VisionMapFilter.vertexShader, VisionMapFilter.fragmentShader);
             this.uniforms.nssm = new PIXI.Matrix();
             this.uniforms.inssm = new PIXI.Matrix();
+
+            this.uniforms.transition = 0;
         }
         apply(filterManager, input, output) {
             filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.nssm);
             filterManager.calculateNormalizedScreenSpaceMatrix(this.uniforms.inssm);
             this.uniforms.inssm.invert();
+
             filterManager.applyFilter(this, input, output);
         }
     }
@@ -108,18 +113,23 @@
             varying vec2 vFilterCoord;
             void main(void){
                gl_Position = vec4((projectionMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);
-               vFilterCoord = ( filterMatrix * vec3( aTextureCoord, 1.0)  ).xy;
+               vFilterCoord = ( filterMatrix * vec3( aTextureCoord, 1.0) ).xy;
                vTextureCoord = vFilterCoord;
             }
         `;
     VisionMapFilter.fragmentShader = `
             precision highp float;
 
+            #define R1 vec2(0.5),      0.02, 0.3
+            #define R2 vec2(0.6),      0.02, 0.3
+            #define R3 vec2(0.7, 0.5), 0.05, 0.3
+
             varying vec2 vTextureCoord;
             uniform sampler2D uSampler;
 
             uniform mat3 nssm;
             uniform mat3 inssm;
+            uniform float transition;
 
             vec2 mapCoord( vec2 coord ){
                 return (vec3(coord, 1.0) * nssm).xy;
@@ -159,19 +169,42 @@
                 return brightnessContrast(col, cm * 2.0, cm * 8.0 + 1.0);
             }
 
+            vec3 darken(vec3 col, vec2 uv, vec2 p, float rInner, float rOuter){
+                vec2 d = p - uv;
+                float l = length(d) * 1.8;
+                float r = rOuter - rInner;
+                float R = rOuter;
+
+                float x = max(R - l, 0.0);
+                return brightnessContrast(col, -x, 1.0);
+            }
+
             void main(){
                 vec2 uv = mapCoord(vTextureCoord);
+                vec2 uv0 = uv;
 
-                uv += warpAround(uv, vec2(0.5), 0.05, 0.2);
-                uv += warpAround(uv, vec2(0.6), 0.1, 0.2);
-                uv += warpAround(uv, vec2(0.7, 0.5), 0.13, 0.3);
+                uv += transition * warpAround(uv, R1);
+                uv += transition * warpAround(uv, R2);
+                uv += transition * warpAround(uv, R3);
 
                 vec3 col = texture2D(uSampler, unmapCoord(uv)).rgb;
+                vec3 e;
 
                 // brightness / contrast
-                // col = enhance(col, uv, vec2(0.5), 0.1, 0.3);
-                // col = enhance(col, uv, vec2(0.6), 0.1, 0.3);
-                // col = enhance(col, uv, vec2(0.7, 0.5), 0.13, 0.5);
+                /*
+                e = col;
+                e = enhance(e, uv, R1);
+                e = enhance(e, uv, R2);
+                e = enhance(e, uv, R3);
+                col = mix(e, col, transition);
+                */
+
+                // simulate vision
+                e = col;
+                e = darken(e, uv0, R1);
+                e = darken(e, uv0, R2);
+                e = darken(e, uv0, R3);
+                col = e;//mix(e, col, transition);
 
                 gl_FragColor = vec4(col, 1.0);
             }
@@ -255,6 +288,20 @@
         sprite.texture.update();
         renderer.render(stage);
     }
+
+    var transitionId = null;
+    var m = visionMapFilter.uniforms.transition < 0.5;
+    function pointerUp(){
+        window.cancelAnimationFrame(transitionId);
+        var start = m ? 0 : 1;
+        var end = m ? 1 : 0;
+        m = !m;
+        transitionId = Math.animation(start, end, 200, Tween.Quad.easeIn, (x)=>{visionMapFilter.uniforms.transition = x});
+    }
+
+    stage.interactive = true; 
+    stage.on('tap', pointerUp);
+    stage.on('click', pointerUp);
 
     setup();
 </script>
