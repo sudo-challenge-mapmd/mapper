@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8f2cb3d1-8604-4154-9653-031ed620bc8b" name="Default" comment="" />
+    <list default="true" id="8f2cb3d1-8604-4154-9653-031ed620bc8b" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/kS9Kf.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/stream.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,22 +18,59 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="238" column="28" lean-forward="true" selection-start-line="238" selection-start-column="28" selection-end-line="238" selection-end-column="28" />
+            <state relative-caret-position="105">
+              <caret line="7" column="31" lean-forward="false" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="stream.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/stream.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="42" lean-forward="false" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="include.preload.js" pinned="false" current-in-tab="false">
+        <entry file="mock://chrome-extension://gighmmpiobklfepjocnamgkkbiglidom/include.preload.js">
+          <provider selected="true" editor-type-id="vmFileEditor">
+            <state />
           </provider>
         </entry>
       </file>
       <file leaf-file-name="pixi.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pixi.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="11241" column="0" lean-forward="false" selection-start-line="11241" selection-start-column="0" selection-end-line="11241" selection-end-column="0" />
+            <state relative-caret-position="175050">
+              <caret line="11676" column="88" lean-forward="false" selection-start-line="11676" selection-start-column="82" selection-end-line="11676" selection-end-column="88" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="webcam.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/tools/webcam.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="570">
+              <caret line="38" column="48" lean-forward="false" selection-start-line="38" selection-start-column="41" selection-end-line="38" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DOMEvents.js" pinned="false" current-in-tab="false">
+        <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DOMEvents.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2370">
+              <caret line="158" column="0" lean-forward="false" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -38,44 +79,10 @@
       <file leaf-file-name="pixi.min.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pixi.min.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-21777">
+            <state relative-caret-position="60">
               <caret line="10" column="20775" lean-forward="false" selection-start-line="10" selection-start-column="20775" selection-end-line="10" selection-end-column="20775" />
               <folding>
-                <marker date="1511017910000" expanded="true" signature="0:178" ph="/*...*/" />
-                <marker date="1511017910000" expanded="true" signature="465:296112" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="916:296096" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="30554:33270" ph="[...]" />
-                <marker date="1511017910000" expanded="true" signature="30570:33266" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="32092:32306" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="62458:70041" ph="[...]" />
-                <marker date="1511017910000" expanded="true" signature="62474:69999" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="63604:65982" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="64199:64273" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="93372:102434" ph="[...]" />
-                <marker date="1511017910000" expanded="true" signature="93388:102184" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="96008:96559" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="127854:130186" ph="[...]" />
-                <marker date="1511017910000" expanded="true" signature="127870:130065" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="127890:128667" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="159233:161356" ph="[...]" />
-                <marker date="1511017910000" expanded="true" signature="159249:161287" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="160142:160402" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="185410:192887" ph="[...]" />
-                <marker date="1511017910000" expanded="true" signature="185426:192773" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="192075:192592" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="192101:192578" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="221936:226213" ph="[...]" />
-                <marker date="1511017910000" expanded="true" signature="221952:226097" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="223893:224919" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="223941:224918" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="224144:224504" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="254578:265247" ph="[...]" />
-                <marker date="1511017910000" expanded="true" signature="254594:265164" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="256331:257160" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="286862:290360" ph="[...]" />
-                <marker date="1511017910000" expanded="true" signature="286878:290295" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="287965:288682" ph="{...}" />
-                <marker date="1511017910000" expanded="true" signature="288031:288681" ph="{...}" />
+                <element signature="n#!!doc" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -86,12 +93,28 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>did</find>
+      <find>onWeb</find>
+      <find>gl</find>
+      <find>.gl</find>
+      <find>renderer</find>
+      <find>canvas</find>
+      <find>.out</find>
+      <find>parent</find>
+      <find>height</find>
+      <find>sprite1</find>
+      <find>canplay</find>
+      <find>goFs</find>
     </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="chrome-extension://gighmmpiobklfepjocnamgkkbiglidom/include.preload.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/stream.html" />
       </list>
     </option>
   </component>
@@ -130,7 +153,6 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -157,8 +179,27 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NestingTreeNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mapMD" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mapMD" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="js" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tools" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -170,13 +211,17 @@
     <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
     <property name="JavaScriptPreferStrict" value="false" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
+    <property name="restartRequiresConfirmation" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.index.html">
+  <component name="RunManager" selected="JavaScript Debug.stream">
     <configuration default="false" name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/mapMD/index.html">
       <method />
     </configuration>
@@ -219,6 +264,12 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -241,8 +292,12 @@
       <recursive>false</recursive>
       <method />
     </configuration>
-    <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.index.html" />
+    <configuration default="false" name="stream" type="JavascriptDebugType" factoryName="JavaScript Debug" uri="http://localhost:63342/mapMD/stream.html">
+      <method />
+    </configuration>
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.stream" />
+      <item index="1" class="java.lang.String" itemvalue="JavaScript Debug.index.html" />
     </list>
     <recent_temporary>
       <list size="1">
@@ -260,33 +315,35 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1511017849575</updated>
-      <workItem from="1511017851036" duration="15318000" />
+      <workItem from="1511017851036" duration="21905000" />
+      <workItem from="1511048852738" duration="1539000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15318000" />
+    <option name="totallyTimeSpent" value="23444000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="455" y="23" width="1225" height="1023" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10481826" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20202874" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39957035" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39957035" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -297,66 +354,100 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="11" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pixi.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175140">
+          <caret line="11676" column="88" lean-forward="false" selection-start-line="11676" selection-start-column="82" selection-end-line="11676" selection-end-column="88" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/tools/webcam.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="38" column="48" lean-forward="false" selection-start-line="38" selection-start-column="41" selection-end-line="38" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DOMEvents.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2370">
+          <caret line="158" column="0" lean-forward="false" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pixi.min.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-21777">
+        <state relative-caret-position="150">
           <caret line="10" column="20775" lean-forward="false" selection-start-line="10" selection-start-column="20775" selection-end-line="10" selection-end-column="20775" />
           <folding>
-            <marker date="1511017910000" expanded="true" signature="0:178" ph="/*...*/" />
-            <marker date="1511017910000" expanded="true" signature="465:296112" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="916:296096" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="30554:33270" ph="[...]" />
-            <marker date="1511017910000" expanded="true" signature="30570:33266" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="32092:32306" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="62458:70041" ph="[...]" />
-            <marker date="1511017910000" expanded="true" signature="62474:69999" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="63604:65982" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="64199:64273" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="93372:102434" ph="[...]" />
-            <marker date="1511017910000" expanded="true" signature="93388:102184" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="96008:96559" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="127854:130186" ph="[...]" />
-            <marker date="1511017910000" expanded="true" signature="127870:130065" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="127890:128667" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="159233:161356" ph="[...]" />
-            <marker date="1511017910000" expanded="true" signature="159249:161287" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="160142:160402" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="185410:192887" ph="[...]" />
-            <marker date="1511017910000" expanded="true" signature="185426:192773" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="192075:192592" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="192101:192578" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="221936:226213" ph="[...]" />
-            <marker date="1511017910000" expanded="true" signature="221952:226097" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="223893:224919" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="223941:224918" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="224144:224504" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="254578:265247" ph="[...]" />
-            <marker date="1511017910000" expanded="true" signature="254594:265164" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="256331:257160" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="286862:290360" ph="[...]" />
-            <marker date="1511017910000" expanded="true" signature="286878:290295" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="287965:288682" ph="{...}" />
-            <marker date="1511017910000" expanded="true" signature="288031:288681" ph="{...}" />
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pixi.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="10" column="20775" lean-forward="false" selection-start-line="10" selection-start-column="20775" selection-end-line="10" selection-end-column="20775" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pixi.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="11241" column="0" lean-forward="false" selection-start-line="11241" selection-start-column="0" selection-end-line="11241" selection-end-column="0" />
+        <state relative-caret-position="175050">
+          <caret line="11676" column="88" lean-forward="false" selection-start-line="11676" selection-start-column="82" selection-end-line="11676" selection-end-column="88" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DOMEvents.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2370">
+          <caret line="158" column="0" lean-forward="false" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/tools/webcam.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="38" column="48" lean-forward="false" selection-start-line="38" selection-start-column="41" selection-end-line="38" selection-end-column="48" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="238" column="28" lean-forward="true" selection-start-line="238" selection-start-column="28" selection-end-line="238" selection-end-column="28" />
+        <state relative-caret-position="105">
+          <caret line="7" column="31" lean-forward="false" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stream.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="42" lean-forward="false" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
           <folding />
         </state>
       </provider>
