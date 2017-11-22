@@ -17,6 +17,6 @@ Our solution has three stages:
 
 We use a recursive algorithm investigate smaller and smaller grid sizes, narrowing down on the boundary between where you can detect the white dot and where you cannot.
 
-![mapper](https://github.com/sudo-challenge-mapmd/mapper/raw/master/car.html)
+![mapper](https://github.com/sudo-challenge-mapmd/mapper/raw/master/car.png)
 
 
