@@ -11,3 +11,12 @@ Our solution has three stages:
 
 ### Mapping the functional visual field
 
+1. Place the phone in the google glasses and navigate to [here](https://sudo-challenge-mapmd.github.io/mapper/). 
+2. Press start and look at the yellow dots in the center of the screen.
+3. Tap the screen when you see a white dot.
+
+We use a recursive algorithm investigate smaller and smaller grid sizes, narrowing down on the boundary between where you can detect the white dot and where you cannot.
+
+![mapper](https://github.com/sudo-challenge-mapmd/mapper/raw/master/car.html)
+
+
