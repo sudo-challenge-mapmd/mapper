@@ -11,7 +11,7 @@ Our solution has three stages:
 
 ### Mapping the functional visual field
 
-Built using [Pixi.js](pixijs.io/) and html2canvas
+Built using Pixi.js and html2canvas
 
 1. Place the phone in the google glasses and navigate to [here](https://sudo-challenge-mapmd.github.io/mapper/). 
 2. Press start and look at the yellow dots in the center of the screen.
